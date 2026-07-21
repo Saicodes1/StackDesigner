@@ -1,0 +1,215 @@
+{
+  "COA": {
+    "agent_name": "COA",
+    "services": [
+      {
+        "raw_text": "Azure Container Apps (Consumption plan, 2-3 apps: API, ingestion worker, frontend)",
+        "service_name": "Azure Container Apps",
+        "tier_or_sku": "Consumption plan",
+        "quantity_hint": "2-3 apps: API, ingestion worker, frontend"
+      },
+      {
+        "raw_text": "Azure Functions (Consumption plan) for document parsing/chunking",
+        "service_name": "Azure Functions",
+        "tier_or_sku": "Consumption plan",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure OpenAI Service S0 (pay-as-you-go, gpt-4o-mini primary + gpt-4o fallback)",
+        "service_name": "Azure OpenAI Service",
+        "tier_or_sku": "S0",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Database for PostgreSQL Flexible Server - Burstable B1ms (1 vCore, 2 GiB)",
+        "service_name": "Azure Database for PostgreSQL Flexible Server",
+        "tier_or_sku": "Burstable B1ms",
+        "quantity_hint": "1 vCore, 2 GiB"
+      },
+      {
+        "raw_text": "Azure AI Search Basic S1 (15 GiB partition)",
+        "service_name": "Azure AI Search",
+        "tier_or_sku": "Basic S1",
+        "quantity_hint": "15 GiB partition"
+      },
+      {
+        "raw_text": "Azure Blob Storage Standard LRS (Hot, documents corpus)",
+        "service_name": "Azure Blob Storage",
+        "tier_or_sku": "Standard LRS",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Key Vault Standard",
+        "service_name": "Azure Key Vault",
+        "tier_or_sku": "Standard",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Active Directory (existing tenant, free tier)",
+        "service_name": "Azure Active Directory",
+        "tier_or_sku": "free tier",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Application Insights + Log Analytics (Pay-as-you-go, 5 GiB cap)",
+        "service_name": "Application Insights",
+        "tier_or_sku": "Pay-as-you-go",
+        "quantity_hint": "5 GiB cap"
+      },
+      {
+        "raw_text": "Azure API Management - Consumption tier",
+        "service_name": "Azure API Management",
+        "tier_or_sku": "Consumption tier",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "GitHub Actions (existing, 2k free min/mo for private)",
+        "service_name": "GitHub Actions",
+        "tier_or_sku": null,
+        "quantity_hint": "2k free min/mo for private"
+      },
+      {
+        "raw_text": "Region: West Europe only (GDPR data residency)",
+        "service_name": "Region: West Europe",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      }
+    ]
+  },
+  "POA": {
+    "agent_name": "POA",
+    "services": [
+      {
+        "raw_text": "Azure Front Door Premium + Azure CDN (edge routing, WAF, TLS termination, EU POPs)",
+        "service_name": "Azure Front Door Premium",
+        "tier_or_sku": "Premium",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "AKS (Azure Kubernetes Service) \u2014 Standard tier, 3 dedicated node pools: (a) Spring Boot API \u2014 D8s_v5 x6 (zone-balanced), (b) AI inference/embedding workers \u2014 NC A10 v5 x2, (c) system pods \u2014 D4s_v5 x3",
+        "service_name": "AKS (Azure Kubernetes Service)",
+        "tier_or_sku": "Standard tier",
+        "quantity_hint": "3 dedicated node pools: (a) D8s_v5 x6, (b) NC A10 v5 x2, (c) D4s_v5 x3"
+      },
+      {
+        "raw_text": "Azure OpenAI Service \u2014 Provisioned Throughput Units (PTU) on GPT-4o, 2 PTUs baseline + autoscale, deployed in Sweden Central (EU residency)",
+        "service_name": "Azure OpenAI Service",
+        "tier_or_sku": "Provisioned Throughput Units (PTU) on GPT-4o",
+        "quantity_hint": "2 PTUs baseline + autoscale"
+      },
+      {
+        "raw_text": "Azure Database for PostgreSQL Flexible Server \u2014 Premium SSD v2, zone-redundant HA, 8 vCore, 2 read replicas for analytics/search",
+        "service_name": "Azure Database for PostgreSQL Flexible Server",
+        "tier_or_sku": "Premium SSD v2",
+        "quantity_hint": "8 vCore, 2 read replicas for analytics/search"
+      },
+      {
+        "raw_text": "pgvector on primary + replicas for vector retrieval (co-located for low latency)",
+        "service_name": "pgvector",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Cache for Redis \u2014 Premium P2, zone-redundant, cluster mode",
+        "service_name": "Azure Cache for Redis",
+        "tier_or_sku": "Premium P2",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Blob Storage \u2014 Premium hot tier with lifecycle mgmt; documents chunked and embedded asynchronously",
+        "service_name": "Blob Storage",
+        "tier_or_sku": "Premium hot tier",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Event Grid + Service Bus Premium (for indexing/decoupling)",
+        "service_name": "Azure Event Grid",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Key Vault Premium (HSM-backed keys), Private Endpoints for all PaaS",
+        "service_name": "Azure Key Vault Premium",
+        "tier_or_sku": "Premium",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Entra ID (Azure AD) + Conditional Access + Managed Identity, Defender for Cloud P2, Microsoft Sentinel",
+        "service_name": "Entra ID (Azure AD)",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Monitor + Log Analytics + App Insights + Container Insights, Diagnostic Settings to immutable storage account (WORM) for audit",
+        "service_name": "Azure Monitor",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      }
+    ]
+  },
+  "SACA": {
+    "agent_name": "SACA",
+    "services": [
+      {
+        "raw_text": "Azure WEU/Sweden North region (EU Data Boundary)",
+        "service_name": "Azure WEU/Sweden North region",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "AKS (private cluster, no public API)",
+        "service_name": "AKS",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure App Service (ILF, VNet integrated)",
+        "service_name": "Azure App Service",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Database for PostgreSQL Flexible (Private Endpoint, CMK)",
+        "service_name": "Azure Database for PostgreSQL Flexible",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure AI Search (Private Endpoint, CMK)",
+        "service_name": "Azure AI Search",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure OpenAI (Private Endpoint, content filter, abuse monitoring)",
+        "service_name": "Azure OpenAI",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Premium Blob Storage (Private Endpoint, CMK, immutable WORM)",
+        "service_name": "Blob Storage",
+        "tier_or_sku": "Premium",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure Key Vault Premium (HSM, RBAC, Private Endpoint)",
+        "service_name": "Azure Key Vault",
+        "tier_or_sku": "Premium",
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Centralized Log Analytics + immutable Archive, Defender for Cloud P2, Microsoft Sentinel",
+        "service_name": "Log Analytics",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      },
+      {
+        "raw_text": "Azure AD Conditional Access + PIM, Azure Policy (Deny, DeployIfNotExist), Microsoft Purview DLP, Front Door WAF",
+        "service_name": "Azure AD Conditional Access",
+        "tier_or_sku": null,
+        "quantity_hint": null
+      }
+    ]
+  }
+}

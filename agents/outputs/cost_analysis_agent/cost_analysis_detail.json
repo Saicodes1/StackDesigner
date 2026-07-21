@@ -1,0 +1,77 @@
+{
+  "COA": {
+    "total_monthly_cost_usd": 144,
+    "matched_services": [
+      "Azure Container Apps (Consumption)",
+      "Azure Functions (Consumption)",
+      "Azure OpenAI Service (gpt-4o-mini input)",
+      "Azure OpenAI Service (gpt-4o-mini output)",
+      "Azure OpenAI Service (gpt-4o input)",
+      "Azure OpenAI Service (gpt-4o output)",
+      "Azure Database for PostgreSQL Flexible Server (Burstable B1ms)",
+      "Azure AI Search (Basic)",
+      "Azure Blob Storage (Hot LRS)",
+      "Azure Key Vault (Standard)",
+      "Application Insights (Pay-as-you-go)"
+    ],
+    "unmatched_services": [
+      "Azure API Management - Consumption tier",
+      "Azure Active Directory (existing tenant, free tier)",
+      "GitHub Actions (existing, 2k free min/mo for private)"
+    ],
+    "notes": "All dollar values sourced from cloud_services table queried via similarity match (sim=1.0 against service_name for matched items). Usage volume assumptions (team ~25 users, internal tool, moderate use): Container Apps Consumption has $0.0000/vCPU_second in DB (request/memory GB-s charges not represented in DB; conservatively $0); Functions ~0.5M exec/mo; OpenAI ~30M input + 10M output tokens/mo, 80% via gpt-4o-mini, 20% via gpt-4o fallback; PostgreSQL B1ms running full 730 hr/mo; AI Search mapped to 'Basic' SKU (notes: '15GB, 3 replicas max' \u2014 exact match for plan's 'Basic S1 15 GiB'); Blob Storage ~50 GB; Key Vault ~100k operations/mo; App Insights capped at 5 GiB ingested/mo. Unmatched items have no row in cloud_services and no alias with similarity >= 0.25."
+  },
+  "POA": {
+    "total_monthly_cost_usd": 29451,
+    "matched_services": [
+      "Azure Front Door (Premium)",
+      "AKS API pool (Standard_D8ds_v5 nodes)",
+      "AKS system pool (Standard_D4s_v5 nodes)",
+      "AKS GPU pool (Standard_NC24ads_A100_v4 \u2014 closest to NC A10 v5)",
+      "Azure OpenAI Service PTU (GPT-4o)",
+      "Azure Database for PostgreSQL Flexible Server (8 vCore)",
+      "Azure Cache for Redis (Premium P2)",
+      "Azure Blob Storage (Premium block blob)",
+      "Azure Service Bus (Premium)",
+      "Azure Key Vault (Premium HSM)",
+      "Microsoft Defender for Cloud (Standard tier)",
+      "Microsoft Sentinel (PAYG)",
+      "Azure Monitor Log Analytics (PAYG)",
+      "Application Insights (PAYG)"
+    ],
+    "unmatched_services": [
+      "Azure CDN (not in cloud_services table)",
+      "pgvector (open-source Postgres extension, not a billable Azure service)",
+      "Azure Event Grid (not in cloud_services table)",
+      "Entra ID / Azure AD / Conditional Access / Managed Identity (not in cloud_services table)",
+      "Container Insights (not in cloud_services table)",
+      "Diagnostic Settings to immutable WORM storage account (not in cloud_services table)"
+    ],
+    "notes": "All prices come from cloud_services table queried via service_name similarity. Aliases table is sparse (3 entries), so service_name similarity was used to find matches. Assumptions for usage volume (team ~25 users, internal tool, moderate): 730 hours/month compute; 2 PTUs baseline; ~500 GB premium blob; ~100 GB Sentinel ingest; ~50 GB Log Analytics; ~20 GB App Insights; 17 protected resources for Defender. Notes per item: (1) GPU pool SKU NC A10 v5 is not in DB \u2014 closest is Standard_NC24ads_A100_v4 at $3.6730/hr used as proxy. (2) PostgreSQL 8 vCore zone-redundant HA + 2 read replicas \u2014 DB only lists Business Critical 8vCore at $0.96/hr; replicas not separately priced. (3) Defender plan calls for P2 but DB only lists Standard tier ($15/server_month) \u2014 used as proxy. (4) Key Vault Premium HSM line is $1/month base only \u2014 per-key HSM operation costs not modeled. (5) Several items in the plan (Azure CDN, Event Grid, Entra ID, Container Insights, WORM storage account, pgvector extension) have no matching rows in the cloud_services table and were left unmatched."
+  },
+  "SACA": {
+    "total_monthly_cost_usd": 2868,
+    "matched_services": [
+      "AKS / Azure Kubernetes Service",
+      "Azure App Service",
+      "Azure Database for PostgreSQL Flexible Server",
+      "Azure AI Search",
+      "Azure OpenAI Service",
+      "Azure Blob Storage",
+      "Azure Key Vault",
+      "Azure Monitor Log Analytics",
+      "Microsoft Defender for Cloud",
+      "Microsoft Sentinel",
+      "Azure Front Door"
+    ],
+    "unmatched_services": [
+      "Azure WEU/Sweden North region (EU Data Boundary) - region, not a billable service",
+      "Azure AD Conditional Access + PIM - no row in cloud_services",
+      "Azure Policy (Deny, DeployIfNotExist) - no row in cloud_services",
+      "Microsoft Purview DLP - no row in cloud_services",
+      "Log Analytics immutable Archive (long-term archive tier) - not separately priced in cloud_services",
+      "Defender for Cloud P2 tier - only Standard tier row present; priced using Standard"
+    ],
+    "notes": "All dollar figures derived from unit_price_usd values returned by SQL queries against the cloud_services / service_aliases tables. Sub-features such as Private Endpoints, CMK, RBAC, content filter, abuse monitoring, WORM immutability, and VNet integration are typically free or non-itemized in this database and are therefore not separately added. Defender for Cloud P2 is priced using the only Defender-for-Cloud row in the DB (Standard at $15/server_month); any P2 premium uplift is not represented here. PostgreSQL Flexible HA/backup surcharges and Key Vault Premium HSM per-operation charges beyond the $1/month base are not separately priced (negligible at 25-user scale). AKS is sized at 3 x D8ds_v5 nodes (3 * $0.7680 * 730h = $1,681.92); right-sizing lower would reduce cost materially. Total rounded to integer: $2,868."
+  }
+}

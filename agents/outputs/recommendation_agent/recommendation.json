@@ -1,0 +1,48 @@
+{
+  "plan_summaries": [
+    {
+      "plan_name": "COA",
+      "estimated_monthly_cost_usd": 144,
+      "pros": [
+        "Low cost with serverless architecture",
+        "GDPR-compliant EU data residency",
+        "Pay-as-you-go pricing for Azure OpenAI"
+      ],
+      "cons": [
+        "Limited horizontal scaling for high traffic",
+        "Single-AZ risk",
+        "Potential cold start latency"
+      ]
+    },
+    {
+      "plan_name": "POA",
+      "estimated_monthly_cost_usd": 29451,
+      "pros": [
+        "High performance with dedicated AKS nodes",
+        "Premium services for low-latency AI inference",
+        "Robust security with Private Endpoints and Defender"
+      ],
+      "cons": [
+        "Significantly exceeds budget ($6,250/month)",
+        "Complex Kubernetes management",
+        "Overprovisioned for 25-user internal tool"
+      ]
+    },
+    {
+      "plan_name": "SACA",
+      "estimated_monthly_cost_usd": 2868,
+      "pros": [
+        "Strong security with Private Endpoints and HSM encryption",
+        "GDPR-compliant EU data residency",
+        "Comprehensive audit logging via Sentinel"
+      ],
+      "cons": [
+        "Moderate cost compared to COA",
+        "Less flexible scaling than POA",
+        "No serverless cost optimization"
+      ]
+    }
+  ],
+  "recommended_plan": "SACA",
+  "recommendation_reasoning": "SACA best balances GDPR compliance, security, and cost. It uses Azure-native services with Private Endpoints and HSM encryption to meet strict security requirements, while EU data residency ensures GDPR compliance. The cost ($2,868/month) is within budget and provides robust audit logging via Sentinel. While POA offers better performance, its $29k/month cost far exceeds the $6,250/month budget. COA is too cost-effective and lacks the security/audit depth needed for enterprise compliance."
+}

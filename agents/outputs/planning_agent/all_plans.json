@@ -1,0 +1,53 @@
+{
+  "COA": {
+    "tech_stack": [
+      "Azure Container Apps (Consumption plan, 2-3 apps: API, ingestion worker, frontend)",
+      "Azure Functions (Consumption plan) for document parsing/chunking",
+      "Azure OpenAI Service S0 (pay-as-you-go, gpt-4o-mini primary + gpt-4o fallback)",
+      "Azure Database for PostgreSQL Flexible Server - Burstable B1ms (1 vCore, 2 GiB)",
+      "Azure AI Search Basic S1 (15 GiB partition)",
+      "Azure Blob Storage Standard LRS (Hot, documents corpus)",
+      "Azure Key Vault Standard",
+      "Azure Active Directory (existing tenant, free tier)",
+      "Application Insights + Log Analytics (Pay-as-you-go, 5 GiB cap)",
+      "Azure API Management - Consumption tier",
+      "GitHub Actions (existing, 2k free min/mo for private)",
+      "Region: West Europe only (GDPR data residency)"
+    ],
+    "description": "A serverless-first Azure architecture deployed solely in West Europe to keep all EU personal data in-region for GDPR. Java Spring Boot API and React frontend run on Azure Container Apps (Consumption) so we pay only per request with no idle VMs. Document ingestion is event-driven through Azure Functions -> Blob Storage -> Azure AI Search, with retrieval-augmented generation via Azure OpenAI (gpt-4o-mini by default, gpt-4o on escalation). A Burstable PostgreSQL B1ms holds lightweight session/audit metadata, while AAD handles auth and Key Vault stores secrets.",
+    "reasoning": "Chose Azure Container Apps Consumption over App Service Premium or AKS to eliminate idle compute cost for a 25-user internal tool with bursty traffic. Selected pay-as-you-go Azure OpenAI over a PTU commitment: at 25 internal users, PTU (~ $2k+/mo) would be wildly over-provisioned; we estimate <$400/mo on gpt-4o-mini. Burstable B1ms (~ $30/mo) handles 25-user metadata workload without paying for provisioned IOPS we won't use. AI Search Basic replaces a self-hosted vector DB (no ops, no HA overhead). Single-region deployment halves egress and removes cross-region replication fees. We accept modest single-AZ risk in exchange for ~40-60% lower steady-state cost vs. zone-redundant equivalents."
+  },
+  "POA": {
+    "tech_stack": [
+      "Azure Front Door Premium + Azure CDN (edge routing, WAF, TLS termination, EU POPs)",
+      "AKS (Azure Kubernetes Service) \u2014 Standard tier, 3 dedicated node pools: (a) Spring Boot API \u2014 D8s_v5 x6 (zone-balanced), (b) AI inference/embedding workers \u2014 NC A10 v5 x2, (c) system pods \u2014 D4s_v5 x3",
+      "Azure OpenAI Service \u2014 Provisioned Throughput Units (PTU) on GPT-4o, 2 PTUs baseline + autoscale, deployed in Sweden Central (EU residency)",
+      "Azure Database for PostgreSQL Flexible Server \u2014 Premium SSD v2, zone-redundant HA, 8 vCore, 2 read replicas for analytics/search",
+      "pgvector on primary + replicas for vector retrieval (co-located for low latency)",
+      "Azure Cache for Redis \u2014 Premium P2, zone-redundant, cluster mode",
+      "Blob Storage \u2014 Premium hot tier with lifecycle mgmt; documents chunked and embedded asynchronously",
+      "Azure Event Grid + Service Bus Premium (for indexing/decoupling)",
+      "Azure Key Vault Premium (HSM-backed keys), Private Endpoints for all PaaS",
+      "Entra ID (Azure AD) + Conditional Access + Managed Identity, Defender for Cloud P2, Microsoft Sentinel",
+      "Azure Monitor + Log Analytics + App Insights + Container Insights, Diagnostic Settings to immutable storage account (WORM) for audit"
+    ],
+    "description": "Edge requests terminate at Front Door Premium with WAF, then route to a zone-redundant AKS cluster in Sweden Central running Spring Boot microservices. The API path is latency-critical: it hits Redis Premium for session/conversation cache, queries the HA PostgreSQL (with pgvector) through a Private Endpoint for retrieval-augmented context, and calls Azure OpenAI over a private link with reserved PTU capacity to eliminate cold starts. A separate GPU node pool handles high-throughput embeddings and batch reindexing off the hot path. The control plane scales via AKS Cluster Autoscaler + HPA, while AI capacity scales via PTU autoscale and additional CPU/GPU pods. EU data residency, encryption at rest with CMK, and full audit/log pipelines satisfy GDPR and security mandates.",
+    "reasoning": "Dedicated AKS nodes over Functions/Container Apps because persistent connections, JIT-free steady-state CPU, and predictable p95 latency matter for chat UX. Premium SSD v2 + zone-redundant HA + read replicas keep retrieval under tens of ms and absorb peak. Redis Premium removes app-tier load from the database (huge throughput win for repeated/similar queries). Reserved Azure OpenAI PTUs remove token-bucket throttling \u2014 the dominant latency variable in shared deployments \u2014 and ensure SLA-grade throughput for 25-person team and future growth. GPU node pool is dedicated (not spot) to keep embedding/index latency stable. Front Door Premium provides anycast edge + WAF, minimizing TLS and routing hops. Horizontal scaling is multi-axis: AKS HPA on CPU/RPS, KEDA on Service Bus queue depth for indexing, Postgres read replicas for fan-out, Redis cluster shards, and OpenAI PTU autoscale. Premium networking (private links, zone redundancy) reduces tail-latency variance."
+  },
+  "SACA": {
+    "tech_stack": [
+      "Azure WEU/Sweden North region (EU Data Boundary)",
+      "AKS (private cluster, no public API)",
+      "Azure App Service (ILF, VNet integrated)",
+      "Azure Database for PostgreSQL Flexible (Private Endpoint, CMK)",
+      "Azure AI Search (Private Endpoint, CMK)",
+      "Azure OpenAI (Private Endpoint, content filter, abuse monitoring)",
+      "Premium Blob Storage (Private Endpoint, CMK, immutable WORM)",
+      "Azure Key Vault Premium (HSM, RBAC, Private Endpoint)",
+      "Centralized Log Analytics + immutable Archive, Defender for Cloud P2, Microsoft Sentinel",
+      "Azure AD Conditional Access + PIM, Azure Policy (Deny, DeployIfNotExist), Microsoft Purview DLP, Front Door WAF"
+    ],
+    "description": "Private VNet with segregated subnets hosts AKS, App Service, Private Endpoints to all data plane services. Azure AD SSO with Conditional Access; Key Vault Premium HSM with CMK for all data-at-rest. Azure OpenAI inference with Prompt Shield, content filters, abuse monitoring. Logs routed to Log Analytics, mirrored immutable to storage, ingested into Sentinel.",
+    "reasoning": "EU regions enforce data residency. Private Endpoints eliminate public data-plane attack surface. CMK + HSM-keyed DEK (double encryption) protects data at rest. Conditional Access + PIM enforce least privilege. Azure Policy + Defender enforce baselines. Sentinel + immutable logs enable tamper-evident audit."
+  }
+}

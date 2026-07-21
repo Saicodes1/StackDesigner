@@ -1,0 +1,43 @@
+{
+  "agent_name": "requirement_agent",
+  "data": {
+    "project_goal": "Build an AI-powered internal customer support platform for employees",
+    "requirements_needed": [
+      "Handle internal document processing",
+      "Provide AI-based answer generation",
+      "Integrate with existing Azure AD authentication",
+      "Support scalable architecture for future growth",
+      "Ensure GDPR compliance for European operations",
+      "Implement robust security controls",
+      "Enable monitoring and audit logging"
+    ],
+    "current_tech_stack": [
+      "Microsoft Azure",
+      "Azure Active Directory",
+      "PostgreSQL",
+      "GitHub Actions",
+      "Java Spring Boot",
+      "React"
+    ],
+    "cloud_provider": {
+      "description": "Azure (preferred), open to alternatives for cost savings"
+    },
+    "budget": 75000.0,
+    "team_size": 25,
+    "constraints": [
+      "GDPR compliance",
+      "Strong security controls",
+      "Monitoring and audit logging",
+      "Scalability for future growth"
+    ],
+    "preferences": [
+      "Azure-native services",
+      "Cost-effective alternatives without major compatibility issues"
+    ],
+    "open_questions": [
+      "Should we use Azure OpenAI, self-hosted models, or another provider?",
+      "What developer hardware is recommended for local AI feature development?"
+    ],
+    "summary": "Develop an AI-driven customer support platform using Azure ecosystem with GDPR compliance, while evaluating optimal AI model solutions and developer hardware requirements"
+  }
+}
