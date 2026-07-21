@@ -34,8 +34,8 @@ A multi-agent AI system that helps you figure out what infrastructure to actuall
 ### Installation
 
 ```bash
-git clone <repo>
-cd ai-based-procurement-uv
+git clone [<repo>](https://github.com/Saicodes1/StackDesigner)
+cd StackDesigner
 uv sync
 ```
 
