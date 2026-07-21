@@ -1,6 +1,6 @@
 # StackDesigner: The One and Only Tech Stack Recommender
 
-A multi-agent AI system that helps you figure out what infrastructure to actually build. Instead of throwing three different architects at the same problem and hoping for consensus, this system runs them independently - one optimizing for cost, one for speed, one for security. Then it ranks them all by real pricing data.
+An agentic AI system that helps you figure out what infrastructure to actually build. Instead of throwing three different architects at the same problem and hoping for consensus, this system runs them independently - one optimizing for cost, one for speed, one for security. Then it ranks them all by real pricing data.
 
 ## Features
 
